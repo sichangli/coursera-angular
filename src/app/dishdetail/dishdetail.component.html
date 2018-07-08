@@ -11,6 +11,9 @@
       <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
       <hr>
     </div>
+    <div [hidden]="dish">
+      <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+    </div>
   </div>
 
   <div fxFlex="40">
@@ -31,6 +34,9 @@
         <button mat-button>SHARE</button>
       </mat-card-actions>
     </mat-card>
+    <div [hidden]="dish">
+      <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+    </div>
   </div>
 
   <div fxFlex="40">
@@ -42,6 +48,9 @@
         <p matLine>-- {{comment.author}} {{comment.date | date}}</p>
       </mat-list-item>
     </mat-list>
+    <div [hidden]="dish">
+      <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
+    </div>
   </div>
 
 </div>
