@@ -29,6 +29,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {baseURL} from './shared/baseurl';
 import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
+import {RestangularModule} from 'ngx-restangular';
+import {RestangularConfigFactory} from './shared/restConfig';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSliderModule,
-    HttpClientModule
+    HttpClientModule,
+    RestangularModule.forRoot(RestangularConfigFactory)
   ],
   entryComponents: [
     LoginComponent
