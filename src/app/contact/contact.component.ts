@@ -1,7 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ContactType, Feedback} from '../shared/feedback';
-import {flyInOut} from '../animations/app.animation';
+import {expand, flyInOut} from '../animations/app.animation';
+import {FeedbackService} from '../services/feedback.service';
+
+enum State {
+  Normal,
+  Submitting,
+  Submitted
+}
 
 @Component({
   selector: 'app-contact',
@@ -13,7 +20,8 @@ import {flyInOut} from '../animations/app.animation';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand(),
   ]
 })
 export class ContactComponent implements OnInit {
@@ -52,7 +60,10 @@ export class ContactComponent implements OnInit {
 
   @ViewChild('fform') feedbackFormDirective;
 
-  constructor(private fb: FormBuilder) {
+  submittedFeedback: Feedback;
+  state = State.Normal;
+
+  constructor(private fb: FormBuilder, private feedbackService: FeedbackService) {
     this.createForm();
   }
 
@@ -66,7 +77,7 @@ export class ContactComponent implements OnInit {
       telnum: ['', [Validators.required, Validators.pattern] ],
       email: ['', [Validators.required, Validators.email] ],
       agree: false,
-      contacttype: 'None',
+      contacttype: 'Normal',
       message: ''
     });
 
@@ -99,6 +110,14 @@ export class ContactComponent implements OnInit {
   onSubmit() {
     this.feedback = this.feedbackForm.value;
     console.log(this.feedback);
+
+    this.state = State.Submitting;
+    this.feedbackService.submitFeedback(this.feedback).subscribe(feedback => {
+      this.state = State.Submitted;
+      setTimeout(() => this.state = State.Normal, 5000);
+      this.submittedFeedback = feedback;
+    });
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -109,5 +128,17 @@ export class ContactComponent implements OnInit {
       message: ''
     });
     this.feedbackFormDirective.resetForm();
+  }
+
+  isNormal(): boolean {
+    return this.state === State.Normal;
+  }
+
+  isSubmitting(): boolean {
+    return this.state === State.Submitting;
+  }
+
+  isSubmitted(): boolean {
+    return this.state === State.Submitted;
   }
 }
