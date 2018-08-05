@@ -86,7 +86,7 @@
       <mat-spinner></mat-spinner><h4>Submitting . . . Please Wait</h4>
     </div>
 
-    <div *ngIf="isSubmitted()">
+    <div *ngIf="isSubmitted()" [@expand]>
       <h4>Your Submission</h4>
       <p>First Name: {{submittedFeedback.firstname}}</p>
       <p>Last Name: {{submittedFeedback.lastname}}</p>
